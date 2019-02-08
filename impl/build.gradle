@@ -1,0 +1,5 @@
+group = 'com.walterjwhite.modules.property'
+description = 'property - impl'
+dependencies {
+  compile project(':infrastructure:datastore:api:service')
+}

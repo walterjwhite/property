@@ -1,0 +1,5 @@
+group = 'com.walterjwhite.modules.property.modules'
+description = 'property - modules - file'
+dependencies {
+  compile project(':infrastructure:dependencies:commons-io')
+}

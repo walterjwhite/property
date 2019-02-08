@@ -1,0 +1,10 @@
+group = 'com.walterjwhite.modules.property.modules'
+description = 'property - modules - cli-helper'
+dependencies {
+  compile project(':infrastructure:datastore:modules:cli')
+  runtime project(':infrastructure:datastore:modules:default')
+  runtime project(':infrastructure:datastore:modules:environment')
+  runtime project(':infrastructure:datastore:modules:file')
+  runtime project(':infrastructure:datastore:modules:properties')
+  runtime project(':infrastructure:datastore:modules:system')
+}
