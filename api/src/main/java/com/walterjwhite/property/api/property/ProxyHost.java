@@ -7,6 +7,4 @@ import com.walterjwhite.property.api.annotation.NotRequired;
  * command-line option, or properties file.
  */
 @NotRequired
-public interface ProxyHost extends ConfigurableProperty {
-
-}
+public interface ProxyHost extends ConfigurableProperty {}

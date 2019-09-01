@@ -11,6 +11,7 @@
   <packaging>pom</packaging>
   <name>property - infrastructure - parent</name>
   <modules>
+    <module>cli-commons-cli</module>
     <module>cli-helper</module>
     <module>command</module>
     <module>default</module>

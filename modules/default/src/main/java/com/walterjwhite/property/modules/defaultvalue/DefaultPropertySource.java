@@ -20,7 +20,7 @@ public class DefaultPropertySource extends AbstractSingularPropertySource<Config
   protected String get(Class<? extends ConfigurableProperty> configurableProperty) {
     for (final Field field : configurableProperty.getDeclaredFields()) {
       if (isDefault(field)) {
-        final String defaultValue = getValue(field).toString();
+        final String defaultValue = getStringValue(field);
         handleEnum(configurableProperty, field, defaultValue);
 
         return defaultValue;
@@ -28,6 +28,16 @@ public class DefaultPropertySource extends AbstractSingularPropertySource<Config
     }
 
     return null;
+  }
+
+  protected String getStringValue(final Field field) {
+    final Object fieldValue = getValue(field);
+    // ChronoUnit patch
+    if (Enum.class.isAssignableFrom(fieldValue.getClass())) {
+      return ((Enum) fieldValue).name();
+    }
+
+    return fieldValue.toString();
   }
 
   protected boolean isDefault(final Field field) {

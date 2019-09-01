@@ -13,7 +13,8 @@ import javax.inject.Qualifier;
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 // @BindingAnnotation
 // use standard CDI and remove guice-specific
-// NOTE: that this has always worked with guice and never have been an issue, is it officially supported on guice?
+// NOTE: that this has always worked with guice and never have been an issue, is it officially
+// supported on guice?
 // NOTE: that on CDI, I believe it should have an AnnotationLiteral reference
 @Qualifier
 public @interface Property {

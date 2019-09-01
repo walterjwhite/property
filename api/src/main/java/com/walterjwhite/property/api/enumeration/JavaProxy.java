@@ -8,8 +8,9 @@ import com.walterjwhite.property.api.property.ProxyHost;
 import com.walterjwhite.property.api.property.ProxyPort;
 
 /**
- * If a property source (could be environment, properties, manifest, etc.) has a proxy configured and the system property target is in the classpath,
- * then this will write those values back to the System settings such that any HTTP calls should use the proxy as configured.
+ * If a property source (could be environment, properties, manifest, etc.) has a proxy configured
+ * and the system property target is in the classpath, then this will write those values back to the
+ * System settings such that any HTTP calls should use the proxy as configured.
  */
 @NotRequired
 public enum JavaProxy implements JavaEnvironmentProperty {

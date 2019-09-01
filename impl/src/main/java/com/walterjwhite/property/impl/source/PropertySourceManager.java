@@ -78,10 +78,13 @@ public class PropertySourceManager extends AbstractPropertyManager<PropertySourc
         final Class<? extends ConfigurableProperty> keyName = entry.getKey();
         final String encryptedValue = entry.getValue().getValue();
 
-        if (encryptedValue == null) return;
+        if (encryptedValue == null)
+          throw new IllegalArgumentException("Encrypted value is null, unable to decrypt it.");
 
         final String plaintextValue = decryptProperty(encryptedValue);
-        if (plaintextValue == null) return;
+        if (plaintextValue == null)
+          throw new IllegalArgumentException(
+              "Plaintext value is null, check the encrypted value is correct.");
 
         final PropertyValue propertyValue = new PropertyValue(entry.getValue().getPropertyType());
         propertyValue.setValue(plaintextValue);

@@ -13,11 +13,15 @@ public class EnvironmentPropertySource extends AbstractSingularStringPropertySou
 
   @Override
   protected String doGet(final String lookupValue) {
+    return get(lookupValue);
+  }
+
+  public static String get(final String lookupValue) {
     return System.getenv().get(lookup(lookupValue));
   }
 
   // environment variables in linux may not have a "."
-  protected String lookup(final String lookupValue) {
+  public static String lookup(final String lookupValue) {
     return (lookupValue.replaceAll("\\.", "_"));
   }
 }
