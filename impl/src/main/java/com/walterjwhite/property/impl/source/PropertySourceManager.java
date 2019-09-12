@@ -7,7 +7,6 @@ import com.walterjwhite.property.api.annotation.PropertyValueType;
 import com.walterjwhite.property.api.property.ConfigurableProperty;
 import com.walterjwhite.property.api.source.PropertySource;
 import com.walterjwhite.property.impl.AbstractPropertyManager;
-import com.walterjwhite.property.impl.DefaultSecretService;
 import com.walterjwhite.property.impl.PropertyHelper;
 import com.walterjwhite.property.impl.PropertySourceComparator;
 import java.lang.reflect.InvocationTargetException;
@@ -24,11 +23,12 @@ public class PropertySourceManager extends AbstractPropertyManager<PropertySourc
       encryptedPropertyValueMap = new HashMap<>();
   //  protected final Properties encryptedProperties = new Properties();
 
-  // TODO: allow this to be overridden
-  protected final SecretService secretService = new DefaultSecretService();
+  protected final SecretService secretService;
 
-  public PropertySourceManager(Reflections reflections, final PropertyManager propertyManager) {
+  public PropertySourceManager(
+      Reflections reflections, final PropertyManager propertyManager, SecretService secretService) {
     super(reflections, propertyManager);
+    this.secretService = secretService;
   }
 
   public void call() {
@@ -51,8 +51,8 @@ public class PropertySourceManager extends AbstractPropertyManager<PropertySourc
     final String value = get(configurablePropertyClass);
 
     // TODO: guice / CDI need to register these beans / initialize the container
-
-    PropertyHelper.validatePropertyConfiguration(configurablePropertyClass, value);
+    PropertyHelper.validatePropertyConfiguration(
+        configurablePropertyClass, type(configurablePropertyClass), value);
   }
 
   protected List<Class<? extends PropertySource>> getClasses() {
@@ -86,9 +86,8 @@ public class PropertySourceManager extends AbstractPropertyManager<PropertySourc
           throw new IllegalArgumentException(
               "Plaintext value is null, check the encrypted value is correct.");
 
-        final PropertyValue propertyValue = new PropertyValue(entry.getValue().getPropertyType());
-        propertyValue.setValue(plaintextValue);
-        propertyValueMap.put(keyName, propertyValue);
+        propertyValueMap.put(
+            keyName, new PropertyValue(entry.getValue().getPropertyType(), plaintextValue));
       }
 
     } finally {
@@ -118,21 +117,18 @@ public class PropertySourceManager extends AbstractPropertyManager<PropertySourc
   @Sensitive
   protected void setSensitiveProperty(
       Class<? extends ConfigurableProperty> configurableProperty, final String value) {
-    final PropertyValue propertyValue =
-        new PropertyValue(getPropertyValueType(configurableProperty));
-    propertyValue.setValue(value);
-    encryptedPropertyValueMap.put(configurableProperty, propertyValue);
+    encryptedPropertyValueMap.put(
+        configurableProperty, new PropertyValue(getPropertyValueType(configurableProperty), value));
   }
 
   protected void setProperty(
-      Class<? extends ConfigurableProperty> configurableProperty, final String value) {
-    final PropertyValue propertyValue =
-        new PropertyValue(getPropertyValueType(configurableProperty));
-    propertyValue.setValue(value);
-    propertyValueMap.put(configurableProperty, propertyValue);
+      final Class<? extends ConfigurableProperty> configurableProperty, final String value) {
+    propertyValueMap.put(
+        configurableProperty, new PropertyValue(getPropertyValueType(configurableProperty), value));
   }
 
-  protected Class getPropertyValueType(Class<? extends ConfigurableProperty> configurableProperty) {
+  public static Class getPropertyValueType(
+      Class<? extends ConfigurableProperty> configurableProperty) {
     if (configurableProperty.isAnnotationPresent(PropertyValueType.class))
       return configurableProperty.getAnnotation(PropertyValueType.class).value();
 
@@ -144,6 +140,7 @@ public class PropertySourceManager extends AbstractPropertyManager<PropertySourc
     return secretService.decrypt(encryptedValue);
   }
 
+  @Sensitive
   public String get(final Class<? extends ConfigurableProperty> configurableProperty) {
     final PropertyValue propertyValue = propertyValueMap.get(configurableProperty);
     if (propertyValue != null) return propertyValue.getValue();

@@ -2,6 +2,7 @@ package com.walterjwhite.property.impl;
 
 import com.walterjwhite.property.api.PropertyManager;
 import com.walterjwhite.property.api.PropertyNameLookupService;
+import com.walterjwhite.property.api.SecretService;
 import com.walterjwhite.property.api.property.ConfigurableProperty;
 import com.walterjwhite.property.impl.source.PropertySourceManager;
 import com.walterjwhite.property.impl.tgt.PropertyTargetManager;
@@ -20,11 +21,13 @@ public class DefaultPropertyManager implements PropertyManager {
   protected final Reflections reflections;
 
   public DefaultPropertyManager(
-      PropertyNameLookupService propertyNameLookupService, Reflections reflections) {
+      PropertyNameLookupService propertyNameLookupService,
+      Reflections reflections,
+      SecretService secretService) {
     this.propertyNameLookupService = propertyNameLookupService;
     this.reflections = reflections;
 
-    this.propertySourceManager = new PropertySourceManager(reflections, this);
+    this.propertySourceManager = new PropertySourceManager(reflections, this, secretService);
     this.propertyTargetManager = new PropertyTargetManager(reflections, this);
   }
 
@@ -37,17 +40,17 @@ public class DefaultPropertyManager implements PropertyManager {
     return propertySourceManager.getKeys();
   }
 
-  // TODO: removed because this seems primitive and doesn't provide much value
-  //  public Properties getProperties() {
-  //    return propertySourceManager.getProperties();
-  //  }
-
   public String get(final Class<? extends ConfigurableProperty> configurableProperty) {
     return propertySourceManager.get(configurableProperty);
   }
 
   @Override
   public void set(Class<? extends ConfigurableProperty> configurableProperty, String value) {
+    // TODO: assert value is of proper type
+    // final PropertyValueType propertyValueType =
+    // configurableProperty.getAnnotation(PropertyValueType.class);
+    // attempt to translate to appropriate type here to ensure the value is properly set
+
     propertySourceManager.set(configurableProperty, value);
   }
 

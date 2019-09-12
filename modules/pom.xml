@@ -7,7 +7,7 @@
     <version>0.0.17-SNAPSHOT</version>
   </parent>
   <groupId>com.walterjwhite.java.infrastructure.property</groupId>
-  <artifactId>infrastructure</artifactId>
+  <artifactId>modules</artifactId>
   <packaging>pom</packaging>
   <name>property - infrastructure - parent</name>
   <modules>

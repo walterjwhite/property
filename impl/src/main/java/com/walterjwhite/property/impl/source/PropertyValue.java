@@ -10,11 +10,12 @@ import lombok.ToString;
 public class PropertyValue {
   // protected final Class<? extends ConfigurableProperty> configurablePropertyClass;
 
+  /**
+   * Whether this value is expected to be a String, Integer, Double, Float, Long, Short, Number,
+   * Byte, Char, Enum, Date/Time, Boolean, BigInteger, BigDecimal
+   */
   protected final Class propertyType;
 
-  protected String value;
-
-  public PropertyValue() {
-    this(String.class);
-  }
+  // NOTE: encrypted values are always stored as a string until they're decrypted
+  protected final String value;
 }

@@ -4,7 +4,10 @@ import com.walterjwhite.property.api.property.ConfigurableProperty;
 import com.walterjwhite.property.impl.annotation.Property;
 import java.lang.annotation.Annotation;
 import javax.enterprise.util.AnnotationLiteral;
+import lombok.ToString;
 
+@ToString
+// @EqualsAndHashCode
 public class PropertyImpl extends AnnotationLiteral<Property> implements Property {
 
   private final Class<? extends ConfigurableProperty> value;
@@ -32,11 +35,6 @@ public class PropertyImpl extends AnnotationLiteral<Property> implements Propert
   public int hashCode() {
     // This is specified in java.lang.Annotation.
     return (127 * "value".hashCode()) ^ value.hashCode();
-  }
-
-  @Override
-  public String toString() {
-    return "@" + Property.class.getName() + "(value=" + value + ")";
   }
 
   @Override
