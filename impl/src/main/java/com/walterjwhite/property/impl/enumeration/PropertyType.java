@@ -62,18 +62,17 @@ public enum PropertyType {
     if (propertyType == null)
       throw new IllegalArgumentException("Property type was not properly passed.");
 
-    if(isValidType(propertyType, input))
-      return true;
+    if (isValidType(propertyType, input)) return true;
 
     if (propertyType.isEnum()) {
-     validateEnum(propertyType, input);
-     return true;
+      validateEnum(propertyType, input);
+      return true;
     }
 
     throw new IllegalArgumentException(propertyType.getName() + " is not currently supported.");
   }
 
-  private static boolean isValidType(final Class propertyType, final String input){
+  private static boolean isValidType(final Class propertyType, final String input) {
     for (final PropertyType propertyConverterType : values()) {
       if (propertyConverterType.propertyClass.equals(propertyType)) {
         return propertyConverterType.isValid(input);
@@ -83,13 +82,13 @@ public enum PropertyType {
     return false;
   }
 
-  private static void validateEnum(final Class propertyType, final String input){
+  private static void validateEnum(final Class propertyType, final String input) {
     try {
       Enum.valueOf((Class<? extends Enum>) propertyType, input);
     } catch (Exception e) {
       // return false;
       throw new IllegalArgumentException(
-              "Unable to translate (" + input + ") into " + propertyType.getName(), e);
+          "Unable to translate (" + input + ") into " + propertyType.getName(), e);
     }
   }
 }
