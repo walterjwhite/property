@@ -2,12 +2,12 @@ package com.walterjwhite.property.impl;
 
 import com.walterjwhite.property.api.property.ConfigurableProperty;
 import com.walterjwhite.property.impl.annotation.Property;
-import java.lang.annotation.Annotation;
-import javax.enterprise.util.AnnotationLiteral;
 import lombok.ToString;
 
+import javax.enterprise.util.AnnotationLiteral;
+import java.lang.annotation.Annotation;
+
 @ToString
-// @EqualsAndHashCode
 public class PropertyImpl extends AnnotationLiteral<Property> implements Property {
 
   private final Class<? extends ConfigurableProperty> value;

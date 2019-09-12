@@ -46,11 +46,6 @@ public class DefaultPropertyManager implements PropertyManager {
 
   @Override
   public void set(Class<? extends ConfigurableProperty> configurableProperty, String value) {
-    // TODO: assert value is of proper type
-    // final PropertyValueType propertyValueType =
-    // configurableProperty.getAnnotation(PropertyValueType.class);
-    // attempt to translate to appropriate type here to ensure the value is properly set
-
     propertySourceManager.set(configurableProperty, value);
   }
 

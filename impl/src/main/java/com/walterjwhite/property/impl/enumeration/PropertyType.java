@@ -1,4 +1,4 @@
-package com.walterjwhite.property.impl.converter;
+package com.walterjwhite.property.impl.enumeration;
 
 import java.util.Arrays;
 import lombok.Getter;
@@ -62,23 +62,34 @@ public enum PropertyType {
     if (propertyType == null)
       throw new IllegalArgumentException("Property type was not properly passed.");
 
+    if(isValidType(propertyType, input))
+      return true;
+
+    if (propertyType.isEnum()) {
+     validateEnum(propertyType, input);
+     return true;
+    }
+
+    throw new IllegalArgumentException(propertyType.getName() + " is not currently supported.");
+  }
+
+  private static boolean isValidType(final Class propertyType, final String input){
     for (final PropertyType propertyConverterType : values()) {
       if (propertyConverterType.propertyClass.equals(propertyType)) {
         return propertyConverterType.isValid(input);
       }
     }
 
-    if (propertyType.isEnum()) {
-      try {
-        Enum.valueOf((Class<? extends Enum>) propertyType, input);
-        return true;
-      } catch (Exception e) {
-        // return false;
-        throw new IllegalArgumentException(
-            "Unable to translate (" + input + ") into " + propertyType.getName(), e);
-      }
-    }
+    return false;
+  }
 
-    throw new IllegalArgumentException(propertyType.getName() + " is not currently supported.");
+  private static void validateEnum(final Class propertyType, final String input){
+    try {
+      Enum.valueOf((Class<? extends Enum>) propertyType, input);
+    } catch (Exception e) {
+      // return false;
+      throw new IllegalArgumentException(
+              "Unable to translate (" + input + ") into " + propertyType.getName(), e);
+    }
   }
 }
