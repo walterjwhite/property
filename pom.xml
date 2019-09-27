@@ -16,6 +16,7 @@
     <module>api</module>
     <module>impl</module>
     <module>modules</module>
+    <module>validation</module>
   </modules>
   <dependencies/>
   <scm>

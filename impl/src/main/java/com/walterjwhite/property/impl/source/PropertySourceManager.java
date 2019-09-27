@@ -16,12 +16,10 @@ import org.reflections.Reflections;
 
 @Getter
 public class PropertySourceManager extends AbstractPropertyManager<PropertySource> {
-  // protected final Properties properties = new Properties();
   protected final Map<Class<? extends ConfigurableProperty>, PropertyValue> propertyValueMap =
       new HashMap<>();
   protected final Map<Class<? extends ConfigurableProperty>, PropertyValue>
       encryptedPropertyValueMap = new HashMap<>();
-  //  protected final Properties encryptedProperties = new Properties();
 
   protected final SecretService secretService;
 
