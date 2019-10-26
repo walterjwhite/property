@@ -1,5 +1,6 @@
 package com.walterjwhite.property.impl;
 
+import com.walterjwhite.logging.annotation.LogStackTrace;
 import com.walterjwhite.property.api.PropertyManager;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
@@ -42,5 +43,6 @@ public abstract class AbstractPropertyManager<PropertyClassType extends Object> 
       throws NoSuchMethodException, IllegalAccessException, InvocationTargetException,
           InstantiationException;
 
+  @LogStackTrace
   protected void handleException(Exception e, final Class configurationClass) {}
 }

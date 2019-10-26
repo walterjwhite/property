@@ -49,8 +49,7 @@ public class PropertySourceManager extends AbstractPropertyManager<PropertySourc
     final String value = get(configurablePropertyClass);
 
     // TODO: guice / CDI need to register these beans / initialize the container
-    PropertyHelper.validatePropertyConfiguration(
-        configurablePropertyClass, type(configurablePropertyClass), value);
+    PropertyHelper.validatePropertyConfiguration(configurablePropertyClass, value);
   }
 
   protected List<Class<? extends PropertySource>> getClasses() {
@@ -82,7 +81,7 @@ public class PropertySourceManager extends AbstractPropertyManager<PropertySourc
         final String plaintextValue = decryptProperty(encryptedValue);
         if (plaintextValue == null)
           throw new IllegalArgumentException(
-              "Plaintext value is null, check the encrypted value is correct.");
+              "Plaintext value is null, check the encrypted value is correct: " + keyName);
 
         propertyValueMap.put(
             keyName, new PropertyValue(entry.getValue().getPropertyType(), plaintextValue));

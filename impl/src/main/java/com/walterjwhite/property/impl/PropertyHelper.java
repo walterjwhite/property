@@ -2,7 +2,6 @@ package com.walterjwhite.property.impl;
 
 import com.walterjwhite.property.api.annotation.NotRequired;
 import com.walterjwhite.property.api.property.ConfigurableProperty;
-import com.walterjwhite.property.impl.enumeration.PropertyType;
 import java.lang.reflect.Modifier;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -31,21 +30,11 @@ public class PropertyHelper {
   }
 
   public static void validatePropertyConfiguration(
-      final Class<? extends ConfigurableProperty> configurablePropertyClass,
-      final Class propertyType,
-      final String value) {
+      final Class<? extends ConfigurableProperty> configurablePropertyClass, final String value) {
     if (value != null) {
-      if (!PropertyType.isValid(propertyType, value)) {
-        throw new PropertyConfigurationError(
-            configurablePropertyClass,
-            " is not of the proper type (" + propertyType.getName() + ") (" + value + ")");
-      }
-
       if (PropertyHelper.isRequired(configurablePropertyClass)) {
         if (!PropertyHelper.isValidClass(configurablePropertyClass))
-          throw new PropertyConfigurationError(
-              configurablePropertyClass,
-              " was not set and not default value was provided either, this is likely a configuration problem.");
+          throw new RequiredPropertyNotSetException(configurablePropertyClass);
       }
     }
   }

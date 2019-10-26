@@ -12,6 +12,8 @@ public enum SystemProxy implements MappedEnvironmentProperty {
   HttpProxy("http_proxy", ProxyHost.class, ProxyPort.class) {
     protected String getValue(
         String environmentValue, Class<? extends ConfigurableProperty> propertyClass) {
+      if (environmentValue == null) return null;
+
       if (ProxyHost.class.equals(propertyClass))
         return (environmentValue.substring(
             environmentValue.indexOf("://") + 3, environmentValue.lastIndexOf(":")));
@@ -22,6 +24,8 @@ public enum SystemProxy implements MappedEnvironmentProperty {
   HttpsProxy("https_proxy", ProxyHost.class, ProxyPort.class) {
     protected String getValue(
         String environmentValue, Class<? extends ConfigurableProperty> propertyClass) {
+      if (environmentValue == null) return null;
+
       if (ProxyHost.class.equals(propertyClass))
         return (environmentValue.substring(
             environmentValue.indexOf("://") + 3, environmentValue.lastIndexOf(":")));

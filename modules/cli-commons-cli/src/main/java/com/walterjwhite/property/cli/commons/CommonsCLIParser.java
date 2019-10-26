@@ -22,7 +22,7 @@ public class CommonsCLIParser implements CLIParser {
       parseCommandLineOptions(
           configurableProperties, commandLinePropertyMap, optionMap, commandLine);
     } catch (ParseException e) {
-      throw (new RuntimeException(e));
+      throw new RuntimeException(e);
     }
 
     return commandLinePropertyMap;
