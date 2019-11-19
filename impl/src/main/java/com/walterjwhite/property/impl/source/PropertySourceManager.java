@@ -84,7 +84,7 @@ public class PropertySourceManager extends AbstractPropertyManager<PropertySourc
               "Plaintext value is null, check the encrypted value is correct: " + keyName);
 
         propertyValueMap.put(
-            keyName, new PropertyValue(entry.getValue().getPropertyType(), plaintextValue));
+            keyName, new DefaultPropertyValue(entry.getValue().getPropertyType(), plaintextValue));
       }
 
     } finally {
@@ -115,13 +115,22 @@ public class PropertySourceManager extends AbstractPropertyManager<PropertySourc
   protected void setSensitiveProperty(
       Class<? extends ConfigurableProperty> configurableProperty, final String value) {
     encryptedPropertyValueMap.put(
-        configurableProperty, new PropertyValue(getPropertyValueType(configurableProperty), value));
+        configurableProperty,
+        new DefaultPropertyValue(getPropertyValueType(configurableProperty), value));
   }
 
   protected void setProperty(
       final Class<? extends ConfigurableProperty> configurableProperty, final String value) {
-    propertyValueMap.put(
-        configurableProperty, new PropertyValue(getPropertyValueType(configurableProperty), value));
+    if (PropertyHelper.isOptional(configurableProperty)) {
+      propertyValueMap.put(
+          configurableProperty,
+          new OptionalPropertyValue(
+              getPropertyValueType(configurableProperty), Optional.ofNullable(value)));
+    } else {
+      propertyValueMap.put(
+          configurableProperty,
+          new DefaultPropertyValue(getPropertyValueType(configurableProperty), value));
+    }
   }
 
   public static Class getPropertyValueType(
@@ -139,15 +148,15 @@ public class PropertySourceManager extends AbstractPropertyManager<PropertySourc
 
   @Sensitive
   public String get(final Class<? extends ConfigurableProperty> configurableProperty) {
-    final PropertyValue propertyValue = propertyValueMap.get(configurableProperty);
-    if (propertyValue != null) return propertyValue.getValue();
+    final PropertyValue defaultPropertyValue = propertyValueMap.get(configurableProperty);
+    if (defaultPropertyValue != null) return defaultPropertyValue.getValue();
 
     return null;
   }
 
   public Class type(final Class<? extends ConfigurableProperty> configurableProperty) {
-    final PropertyValue propertyValue = propertyValueMap.get(configurableProperty);
-    if (propertyValue != null) return propertyValue.getPropertyType();
+    final PropertyValue defaultPropertyValue = propertyValueMap.get(configurableProperty);
+    if (defaultPropertyValue != null) return defaultPropertyValue.getPropertyType();
 
     return null;
   }

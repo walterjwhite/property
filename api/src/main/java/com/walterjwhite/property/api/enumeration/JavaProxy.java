@@ -1,6 +1,6 @@
 package com.walterjwhite.property.api.enumeration;
 
-import com.walterjwhite.property.api.annotation.NotRequired;
+import com.walterjwhite.property.api.annotation.Optional;
 import com.walterjwhite.property.api.property.ConfigurableProperty;
 import com.walterjwhite.property.api.property.JavaEnvironmentProperty;
 import com.walterjwhite.property.api.property.NoProxy;
@@ -12,7 +12,7 @@ import com.walterjwhite.property.api.property.ProxyPort;
  * and the system property target is in the classpath, then this will write those values back to the
  * System settings such that any HTTP calls should use the proxy as configured.
  */
-@NotRequired
+@Optional
 public enum JavaProxy implements JavaEnvironmentProperty {
   HttpProxyHost("http.proxyHost", ProxyHost.class),
   HttpProxyPort("http.proxyPort", ProxyPort.class),

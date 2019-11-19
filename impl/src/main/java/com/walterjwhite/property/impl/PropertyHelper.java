@@ -1,6 +1,6 @@
 package com.walterjwhite.property.impl;
 
-import com.walterjwhite.property.api.annotation.NotRequired;
+import com.walterjwhite.property.api.annotation.Optional;
 import com.walterjwhite.property.api.property.ConfigurableProperty;
 import java.lang.reflect.Modifier;
 import lombok.AccessLevel;
@@ -14,9 +14,9 @@ public class PropertyHelper {
     return (!Modifier.isAbstract(clazz.getModifiers()));
   }
 
-  public static boolean isRequired(
+  public static boolean isOptional(
       final Class<? extends ConfigurableProperty> configurablePropertyClass) {
-    return configurablePropertyClass.isAnnotationPresent(NotRequired.class);
+    return configurablePropertyClass.isAnnotationPresent(Optional.class);
   }
 
   public static boolean isValidClass(
@@ -32,9 +32,11 @@ public class PropertyHelper {
   public static void validatePropertyConfiguration(
       final Class<? extends ConfigurableProperty> configurablePropertyClass, final String value) {
     if (value != null) {
-      if (PropertyHelper.isRequired(configurablePropertyClass)) {
+      if (!PropertyHelper.isOptional(configurablePropertyClass)) {
         if (!PropertyHelper.isValidClass(configurablePropertyClass))
           throw new RequiredPropertyNotSetException(configurablePropertyClass);
+      } else {
+        // set optional ...
       }
     }
   }

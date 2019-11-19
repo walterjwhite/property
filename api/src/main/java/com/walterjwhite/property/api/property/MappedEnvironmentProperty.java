@@ -1,8 +1,8 @@
 package com.walterjwhite.property.api.property;
 
-import com.walterjwhite.property.api.annotation.NotRequired;
+import com.walterjwhite.property.api.annotation.Optional;
 
-@NotRequired
+@Optional
 public interface MappedEnvironmentProperty extends ConfigurableProperty {
   String getKey();
 

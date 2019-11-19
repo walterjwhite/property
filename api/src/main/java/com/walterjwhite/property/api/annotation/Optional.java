@@ -10,4 +10,4 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.LOCAL_VARIABLE, ElementType.FIELD})
-public @interface NotRequired {}
+public @interface Optional {}
